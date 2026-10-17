@@ -1,9 +1,22 @@
 import React from 'react'
-import './styles.css'
+import type { Metadata } from 'next'
+import { getPayload } from 'payload'
 
-export const metadata = {
-  description: 'A blank template using Payload in a Next.js app.',
-  title: 'Payload Blank Template',
+import config from '@/payload.config'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-icons/font/bootstrap-icons.css'
+import './devfolio.css'
+
+export async function generateMetadata(): Promise<Metadata> {
+  const payload = await getPayload({ config })
+  const settings = await payload.findGlobal({ slug: 'site-settings' })
+  const favicon = settings.favicon && typeof settings.favicon === 'object' ? settings.favicon.url : null
+
+  return {
+    title: settings.seo?.title || settings.siteName,
+    description: settings.seo?.description || undefined,
+    icons: favicon ? { icon: favicon } : undefined,
+  }
 }
 
 export default async function RootLayout(props: { children: React.ReactNode }) {
@@ -11,9 +24,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
 
   return (
     <html lang="en">
-      <body>
-        <main>{children}</main>
-      </body>
+      <body>{children}</body>
     </html>
   )
 }
