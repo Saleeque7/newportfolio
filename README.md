@@ -1,6 +1,6 @@
 # Portfolio
 
-Personal portfolio built with Next.js and Payload CMS (SQLite).
+Personal portfolio built with Next.js and Payload CMS (MongoDB).
 
 ## Local setup
 

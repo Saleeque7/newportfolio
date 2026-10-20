@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" viewBox="0 0 18 22">
+  <!-- Mirror of seam-left.svg for the right frame -->
+  <defs>
+    <radialGradient id="rivet" cx=".36" cy=".3" r=".75">
+      <stop offset="0" stop-color="#a39d94"/>
+      <stop offset=".18" stop-color="#55514b"/>
+      <stop offset=".5" stop-color="#22201d"/>
+      <stop offset="1" stop-color="#0b0a09"/>
+    </radialGradient>
+  </defs>
+  <path d="M13,3 A8,8 0 0 0 13,19 Z" fill="#2a2622"/>
+  <path d="M13,3 A8,8 0 0 0 13,19" fill="none" stroke="#5e4b32" stroke-width="1" opacity=".8"/>
+  <circle cx="10.5" cy="11" r="4.3" fill="#080807"/>
+  <circle cx="10.5" cy="11" r="3.2" fill="url(#rivet)"/>
+</svg>

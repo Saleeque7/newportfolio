@@ -1,4 +1,4 @@
-import { sqliteAdapter } from '@payloadcms/db-sqlite'
+import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
@@ -10,6 +10,7 @@ import { Media } from './collections/Media'
 import { Projects } from './collections/Projects'
 import { Services } from './collections/Services'
 import { Experience } from './collections/Experience'
+import { Messages } from './collections/Messages'
 import { SiteSettings } from './globals/SiteSettings'
 import { Hero } from './globals/Hero'
 import { About } from './globals/About'
@@ -24,17 +25,15 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Projects, Services, Experience],
+  collections: [Users, Media, Projects, Services, Experience, Messages],
   globals: [SiteSettings, Hero, About],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-  db: sqliteAdapter({
-    client: {
-      url: process.env.DATABASE_URL || '',
-    },
+  db: mongooseAdapter({
+    url: process.env.DATABASE_URL || '',
   }),
   sharp,
   plugins: [],

@@ -72,6 +72,7 @@ export interface Config {
     projects: Project;
     services: Service;
     experience: Experience;
+    messages: Message;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -84,13 +85,14 @@ export interface Config {
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
     experience: ExperienceSelect<false> | ExperienceSelect<true>;
+    messages: MessagesSelect<false> | MessagesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: number;
+    defaultIDType: string;
   };
   fallbackLocale: null;
   globals: {
@@ -136,7 +138,7 @@ export interface UserAuthOperations {
  * via the `definition` "users".
  */
 export interface User {
-  id: number;
+  id: string;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -162,7 +164,7 @@ export interface User {
  * via the `definition` "media".
  */
 export interface Media {
-  id: number;
+  id: string;
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -181,10 +183,10 @@ export interface Media {
  * via the `definition` "projects".
  */
 export interface Project {
-  id: number;
+  id: string;
   title: string;
-  cover: number | Media;
-  gallery?: (number | Media)[] | null;
+  cover: string | Media;
+  gallery?: (string | Media)[] | null;
   description?: string | null;
   techStack?:
     | {
@@ -204,7 +206,7 @@ export interface Project {
  * via the `definition` "services".
  */
 export interface Service {
-  id: number;
+  id: string;
   title: string;
   /**
    * Bootstrap icon class, e.g. "bi-code-slash".
@@ -220,7 +222,7 @@ export interface Service {
  * via the `definition` "experience".
  */
 export interface Experience {
-  id: number;
+  id: string;
   role: string;
   company: string;
   startDate: string;
@@ -232,10 +234,24 @@ export interface Experience {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "messages".
+ */
+export interface Message {
+  id: string;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  read?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: number;
+  id: string;
   key: string;
   data:
     | {
@@ -252,32 +268,36 @@ export interface PayloadKv {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: number;
+  id: string;
   document?:
     | ({
         relationTo: 'users';
-        value: number | User;
+        value: string | User;
       } | null)
     | ({
         relationTo: 'media';
-        value: number | Media;
+        value: string | Media;
       } | null)
     | ({
         relationTo: 'projects';
-        value: number | Project;
+        value: string | Project;
       } | null)
     | ({
         relationTo: 'services';
-        value: number | Service;
+        value: string | Service;
       } | null)
     | ({
         relationTo: 'experience';
-        value: number | Experience;
+        value: string | Experience;
+      } | null)
+    | ({
+        relationTo: 'messages';
+        value: string | Message;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: number | User;
+    value: string | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -287,10 +307,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: number;
+  id: string;
   user: {
     relationTo: 'users';
-    value: number | User;
+    value: string | User;
   };
   key?: string | null;
   value?:
@@ -310,7 +330,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: number;
+  id: string;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -407,6 +427,19 @@ export interface ExperienceSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "messages_select".
+ */
+export interface MessagesSelect<T extends boolean = true> {
+  name?: T;
+  email?: T;
+  subject?: T;
+  message?: T;
+  read?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -450,13 +483,16 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  * via the `definition` "site-settings".
  */
 export interface SiteSetting {
-  id: number;
+  id: string;
   /**
    * Shown as the logo text when no logo image is set.
    */
   siteName: string;
-  logo?: (number | null) | Media;
-  favicon?: (number | null) | Media;
+  logo?: (string | null) | Media;
+  /**
+   * Browser tab icon. Square PNG (e.g. 512×512), SVG or ICO.
+   */
+  favicon?: (string | null) | Media;
   navLinks?:
     | {
         label: string;
@@ -477,7 +513,7 @@ export interface SiteSetting {
   seo?: {
     title?: string | null;
     description?: string | null;
-    ogImage?: (number | null) | Media;
+    ogImage?: (string | null) | Media;
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -487,7 +523,7 @@ export interface SiteSetting {
  * via the `definition` "hero".
  */
 export interface Hero {
-  id: number;
+  id: string;
   title: string;
   /**
    * Rotating words typed under the title.
@@ -499,7 +535,7 @@ export interface Hero {
       }[]
     | null;
   quote?: string | null;
-  backgroundImage?: (number | null) | Media;
+  backgroundImage?: (string | null) | Media;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -508,8 +544,8 @@ export interface Hero {
  * via the `definition` "about".
  */
 export interface About {
-  id: number;
-  photo?: (number | null) | Media;
+  id: string;
+  photo?: (string | null) | Media;
   name: string;
   profile?: string | null;
   email?: string | null;

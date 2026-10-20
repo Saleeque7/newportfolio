@@ -26,6 +26,24 @@ const Header = ({ siteName, logoUrl, navLinks }: HeaderProps) => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Lock page scroll behind the open mobile menu, and close it if the
+  // window grows past the mobile breakpoint (991px in devfolio.css).
+  useEffect(() => {
+    if (!isMobileNavOpen) return
+
+    document.body.style.overflow = 'hidden'
+    const desktop = window.matchMedia('(min-width: 992px)')
+    const handleChange = (e: MediaQueryListEvent) => {
+      if (e.matches) setIsMobileNavOpen(false)
+    }
+    desktop.addEventListener('change', handleChange)
+
+    return () => {
+      document.body.style.overflow = ''
+      desktop.removeEventListener('change', handleChange)
+    }
+  }, [isMobileNavOpen])
+
   return (
     <header id="header" className={`fixed-top ${isScrolled ? 'header-scrolled' : ''}`}>
       <div className="container d-flex align-items-center justify-content-between">
@@ -47,10 +65,16 @@ const Header = ({ siteName, logoUrl, navLinks }: HeaderProps) => {
               </li>
             ))}
           </ul>
-          <i
-            className={`bi mobile-nav-toggle ${isMobileNavOpen ? 'bi-x' : 'bi-list'}`}
+          <button
+            type="button"
+            className="mobile-nav-toggle"
+            aria-label={isMobileNavOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isMobileNavOpen}
+            aria-controls="navbar"
             onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}
-          ></i>
+          >
+            <i className={`bi ${isMobileNavOpen ? 'bi-x' : 'bi-list'}`}></i>
+          </button>
         </nav>
       </div>
     </header>

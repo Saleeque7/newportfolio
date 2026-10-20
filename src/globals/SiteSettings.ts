@@ -15,7 +15,12 @@ export const SiteSettings: GlobalConfig = {
       admin: { description: 'Shown as the logo text when no logo image is set.' },
     },
     { name: 'logo', type: 'upload', relationTo: 'media' },
-    { name: 'favicon', type: 'upload', relationTo: 'media' },
+    {
+      name: 'favicon',
+      type: 'upload',
+      relationTo: 'media',
+      admin: { description: 'Browser tab icon. Square PNG (e.g. 512×512), SVG or ICO.' },
+    },
     {
       name: 'navLinks',
       label: 'Navigation Links',

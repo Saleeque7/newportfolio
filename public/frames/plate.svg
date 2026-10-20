@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- 9-slice card frame (slice 22). Weathered dark-iron band between a muted bronze
+       outer line and an inner line that curves around a round boss in each corner.
+       Rivets are near-black iron with a small grey glint. Kept low-contrast on purpose
+       so the frame sits back from the card content. -->
+  <defs>
+    <linearGradient id="band" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#34302a"/>
+      <stop offset=".3" stop-color="#25221e"/>
+      <stop offset=".55" stop-color="#2e2a25"/>
+      <stop offset="1" stop-color="#211e1a"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9a7d55"/>
+      <stop offset=".3" stop-color="#6a5539"/>
+      <stop offset=".55" stop-color="#8c714c"/>
+      <stop offset=".8" stop-color="#5e4b32"/>
+      <stop offset="1" stop-color="#7f6644"/>
+    </linearGradient>
+    <radialGradient id="rivet" cx=".36" cy=".3" r=".75">
+      <stop offset="0" stop-color="#a39d94"/>
+      <stop offset=".18" stop-color="#55514b"/>
+      <stop offset=".5" stop-color="#22201d"/>
+      <stop offset="1" stop-color="#0b0a09"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Dark iron band, including the round corner bosses -->
+  <path fill="url(#band)" fill-rule="evenodd" d="
+    M8,1 H56 A7,7 0 0 1 63,8 V56 A7,7 0 0 1 56,63 H8 A7,7 0 0 1 1,56 V8 A7,7 0 0 1 8,1 Z
+    M15.93,5 L48.07,5 A8,8 0 0 0 59,15.93 L59,48.07 A8,8 0 0 0 48.07,59 L15.93,59 A8,8 0 0 0 5,48.07 L5,15.93 A8,8 0 0 0 15.93,5 Z"/>
+
+  <!-- Outer edge: dark rim, then a muted bronze molding line -->
+  <rect x="1" y="1" width="62" height="62" rx="7" fill="none" stroke="#050505" stroke-width="1.4"/>
+  <rect x="1.9" y="1.9" width="60.2" height="60.2" rx="6.2" fill="none" stroke="url(#line)" stroke-width="1.1" opacity=".85"/>
+
+  <!-- Inner bronze line wrapping the corner bosses, with a dark shadow just inside it -->
+  <path fill="none" stroke="url(#line)" stroke-width="1.1" opacity=".9" d="M15.93,5 L48.07,5 A8,8 0 0 0 59,15.93 L59,48.07 A8,8 0 0 0 48.07,59 L15.93,59 A8,8 0 0 0 5,48.07 L5,15.93 A8,8 0 0 0 15.93,5 Z"/>
+  <path fill="none" stroke="#000" stroke-width="1" opacity=".75" d="M16.4,6.1 L47.6,6.1 M57.9,16.4 L57.9,47.6 M47.6,57.9 L16.4,57.9 M6.1,47.6 L6.1,16.4"/>
+
+  <!-- Dark iron rivets -->
+  <g>
+    <circle cx="9" cy="9" r="4.8" fill="#080807"/>
+    <circle cx="55" cy="9" r="4.8" fill="#080807"/>
+    <circle cx="55" cy="55" r="4.8" fill="#080807"/>
+    <circle cx="9" cy="55" r="4.8" fill="#080807"/>
+    <circle cx="9" cy="9" r="3.7" fill="url(#rivet)"/>
+    <circle cx="55" cy="9" r="3.7" fill="url(#rivet)"/>
+    <circle cx="55" cy="55" r="3.7" fill="url(#rivet)"/>
+    <circle cx="9" cy="55" r="3.7" fill="url(#rivet)"/>
+  </g>
+</svg>
