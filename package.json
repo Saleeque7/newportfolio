@@ -21,6 +21,7 @@
     "@payloadcms/db-mongodb": "3.91.0",
     "@payloadcms/next": "3.91.0",
     "@payloadcms/richtext-lexical": "3.91.0",
+    "@payloadcms/storage-vercel-blob": "^3.91.0",
     "@payloadcms/ui": "3.91.0",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.2",
