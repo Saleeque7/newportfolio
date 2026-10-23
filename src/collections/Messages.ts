@@ -12,27 +12,6 @@ export const Messages: CollectionConfig = {
   access: {
     create: () => false,
   },
-  hooks: {
-    afterChange: [
-      async ({ doc, operation, req }) => {
-        if (operation !== 'create') return doc
-        const to = process.env.CONTACT_TO_EMAIL || process.env.SMTP_USER
-        if (!to) return doc
-        // A failed email must not lose the message; it is already saved.
-        try {
-          await req.payload.sendEmail({
-            to,
-            replyTo: doc.email,
-            subject: `Portfolio message: ${doc.subject}`,
-            text: `From: ${doc.name} <${doc.email}>\nSubject: ${doc.subject}\n\n${doc.message}`,
-          })
-        } catch (err) {
-          req.payload.logger.error({ err }, 'Contact notification email failed')
-        }
-        return doc
-      },
-    ],
-  },
   fields: [
     { name: 'name', type: 'text', required: true },
     { name: 'email', type: 'email', required: true },

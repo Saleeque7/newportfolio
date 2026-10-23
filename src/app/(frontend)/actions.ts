@@ -31,12 +31,28 @@ export async function sendMessage(_prev: ContactState, formData: FormData): Prom
   if (!data.message) errors.message = 'Please write a message.'
   if (Object.keys(errors).length) return { status: 'error', errors }
 
+  let payload
   try {
-    const payload = await getPayload({ config })
+    payload = await getPayload({ config })
     await payload.create({ collection: 'messages', data })
   } catch (err) {
     console.error('Contact form failed to save', err)
     return { status: 'error', message: 'Something went wrong. Please try again or email me directly.' }
+  }
+
+  // Notify by email only after the save has committed, so a slow or failing SMTP server can't lose the message
+  const to = process.env.CONTACT_TO_EMAIL || process.env.SMTP_USER
+  if (to) {
+    try {
+      await payload.sendEmail({
+        to,
+        replyTo: data.email,
+        subject: `Portfolio message: ${data.subject}`,
+        text: `From: ${data.name} <${data.email}>\nSubject: ${data.subject}\n\n${data.message}`,
+      })
+    } catch (err) {
+      console.error('Contact notification email failed', err)
+    }
   }
 
   return { status: 'success', message: "Thanks! I'll get back to you soon." }
