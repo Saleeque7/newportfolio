@@ -43,8 +43,8 @@ export default buildConfig({
       enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
       collections: { media: true },
       token: process.env.BLOB_READ_WRITE_TOKEN,
-      // Upload from the browser straight to Blob, avoiding Vercel's 4.5 MB request limit.
-      clientUploads: true,
+      // Uploads go through the server, so files must stay under Vercel's 4.5 MB request limit.
+      // Browser-direct uploads (clientUploads) hung on files over ~1 MB when Payload read them back.
     }),
   ],
 })
