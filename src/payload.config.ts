@@ -1,4 +1,5 @@
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import path from 'path'
@@ -37,6 +38,21 @@ export default buildConfig({
     url: process.env.DATABASE_URL || '',
   }),
   sharp,
+  // Gmail SMTP for contact form notifications; without credentials Payload just logs emails to the console.
+  email: process.env.SMTP_USER
+    ? nodemailerAdapter({
+        defaultFromAddress: process.env.SMTP_USER,
+        defaultFromName: 'Portfolio Contact Form',
+        // Skip the SMTP handshake on every cold start
+        skipVerify: true,
+        transportOptions: {
+          host: 'smtp.gmail.com',
+          port: 465,
+          secure: true,
+          auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+        },
+      })
+    : undefined,
   plugins: [
     // Store uploads in Vercel Blob when deployed; without a token they stay in the local media/ folder.
     vercelBlobStorage({
