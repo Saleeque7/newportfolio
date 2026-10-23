@@ -14,7 +14,10 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export async function sendMessage(_prev: ContactState, formData: FormData): Promise<ContactState> {
   // Honeypot: real visitors never see or fill this field
-  if (formData.get('website')) return { status: 'success', message: 'Thanks! Your message is on its way.' }
+  if (formData.get('cf_hp_check')) {
+    console.warn('Contact form honeypot triggered; message dropped')
+    return { status: 'success', message: "Thanks! I'll get back to you soon." }
+  }
 
   const field = (key: string) => String(formData.get(key) ?? '').trim()
   const data = {

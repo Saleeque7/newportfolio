@@ -22,8 +22,9 @@ const ContactForm = () => {
 
   return (
     <form action={formAction} className="contact-form" noValidate>
-      {/* Honeypot, hidden from people */}
-      <input type="text" name="website" tabIndex={-1} autoComplete="off" className="contact-form__trap" aria-hidden="true" />
+      {/* Honeypot, hidden from people. The name must not look like a real field ("website", "url"...),
+          or browsers and password managers autofill it and real messages get dropped as spam. */}
+      <input type="text" name="cf_hp_check" tabIndex={-1} autoComplete="new-password" className="contact-form__trap" aria-hidden="true" />
 
       <div className="row g-3">
         <div className="col-md-6">
