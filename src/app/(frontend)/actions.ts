@@ -28,7 +28,7 @@ export async function sendMessage(_prev: ContactState, formData: FormData): Prom
   if (!data.name) errors.name = 'Please enter your name.'
   if (!EMAIL_RE.test(data.email)) errors.email = 'Please enter a valid email.'
   if (!data.subject) errors.subject = 'Please add a subject.'
-  if (data.message.length < 10) errors.message = 'Please write at least 10 characters.'
+  if (!data.message) errors.message = 'Please write a message.'
   if (Object.keys(errors).length) return { status: 'error', errors }
 
   try {

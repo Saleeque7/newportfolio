@@ -3,6 +3,7 @@ import { getPayload } from 'payload'
 import config from '@/payload.config'
 import type { Media } from '@/payload-types'
 import { PROFILE, SOCIALS } from '@/data/resume'
+import { siteUrl } from '@/lib/site'
 import Header from '@/components/Header'
 import Hero from '@/components/Hero'
 import About from '@/components/About'
@@ -39,9 +40,27 @@ export default async function HomePage() {
 
   const navLinks = settings.navLinks?.length ? settings.navLinks : DEFAULT_NAV
   const typedStrings = hero.typedStrings?.length ? hero.typedStrings.map((item) => item.text) : PROFILE.typedRoles
+  const socials = settings.socials?.length ? settings.socials : SOCIALS
+  const photoUrl = mediaUrl(about.photo)
+
+  // Person schema: tells Google this site and the social profiles in sameAs belong to the same person
+  const personLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: about.name || settings.siteName,
+    url: siteUrl,
+    jobTitle: about.profile || PROFILE.role,
+    image: photoUrl ? new URL(photoUrl, siteUrl).href : undefined,
+    sameAs: socials.filter((s) => s.platform !== 'whatsapp').map((s) => s.url),
+  }
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        // Escape < so profile text can't close the script tag
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd).replace(/</g, '\\u003c') }}
+      />
       <Header siteName={settings.siteName} logoUrl={mediaUrl(settings.logo)} navLinks={navLinks} />
       <Hero
         title={hero.title}
@@ -51,14 +70,14 @@ export default async function HomePage() {
       />
       <main id="main">
         {/* Hidden until the About global has been saved in the admin */}
-        {about.name && <About data={about} photoUrl={mediaUrl(about.photo)} />}
+        {about.name && <About data={about} photoUrl={photoUrl} />}
         <Services services={services.docs} />
         <Work projects={projects.docs} />
         <Career experience={experience.docs} />
         <Contact
           email={about.email}
           phone={about.phone}
-          socials={settings.socials?.length ? settings.socials : SOCIALS}
+          socials={socials}
         />
       </main>
     </>
